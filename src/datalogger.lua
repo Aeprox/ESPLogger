@@ -1,13 +1,6 @@
 DHT = require("dht_lib")
 bh1750 = require("bh1750")
 
--- start wifi after 2s
-tmr.alarm(1,2000,0,startWifi)
--- display wifi info after 6s
-tmr.alarm(2,6000,0,printWifiInfo)
--- update thingspeak every 2 minutes
-tmr.alarm(3, APIdelay*1000, 1, updateThingSpeak)
-
 -- Setup wifi connection & sensors
 function startWifi()
     print("Starting wifi..")
@@ -41,7 +34,6 @@ function updateThingSpeak()
     end
 end 
 
-
 function comma_value(n) -- credit http://richard.warburton.it
     local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
     return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
@@ -55,3 +47,10 @@ function round(x)
         return x-decimal
     end 
 end
+
+-- start wifi after 2s
+tmr.alarm(1,2000,0,startWifi)
+-- display wifi info after 6s
+tmr.alarm(2,6000,0,printWifiInfo)
+-- update thingspeak every 2 minutes
+tmr.alarm(3, APIdelay*1000, 1, updateThingSpeak)
