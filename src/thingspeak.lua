@@ -1,6 +1,7 @@
 -- sends temp, hum and lux to thinkspeak channel
 local sent = false
 local conn=net.createConnection(net.TCP, 0)
+
  
 print("Connection created")
 conn:connect(80,'api.thingspeak.com')
@@ -29,5 +30,5 @@ conn:on("disconnection", function(conn)
     if sent == false then
         print("Failed to send data.");
     end
-        
+    goToSleep()    
 end)

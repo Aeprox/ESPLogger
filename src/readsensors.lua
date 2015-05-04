@@ -1,6 +1,13 @@
+DHT = require("dht_lib")
+bh1750 = require("bh1750")
+
 hum = 0
 temp = 0
 lux = 0
+
+-- init sensors
+bh1750.init(SDA_PIN, SCL_PIN)
+
 
 -- read data from temp/hum sensor
 DHT.read(DHTPIN)
@@ -22,3 +29,9 @@ else
 end
 print("Illuminance: "..(lux).." lx")
 
+-- unload sensor modules
+bh1750 = nil
+package.loaded["bh1750"]=nil
+
+DHT = nil
+package.loaded["dht_lib"]=nil

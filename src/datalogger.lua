@@ -1,32 +1,36 @@
-DHT = require("dht_lib")
-bh1750 = require("bh1750")
+local retries = 0
 
 -- Setup wifi connection & sensors
 function startWifi()
     print("Starting wifi..")
     wifi.setmode(wifi.STATION)
     wifi.sta.config(SSID,password)
-    bh1750.init(SDA_PIN, SCL_PIN)
+
+    tmr.alarm(2,4000,0,checkConnection)
 end
 
 -- Print wifi info (or reconnect)
-function printWifiInfo()
-    
+function checkConnection()
     if wifi.sta.status() < 5 then
-        print("Network connection lost, trying to reconnect to "..SSID.." in 5 seconds")
+        print("Connection failed, trying to reconnect to "..SSID.." in 5 seconds")
         tmr.alarm(1,5000,0,startWifi)
-        tmr.alarm(2,9000,0,printWifiInfo)
     else
         print("Connected with ip "..wifi.sta.getip())
+        updateThingSpeak()
     end
 end
 
 -- read sensors and update thingspeak (or reconnect)
 function updateThingSpeak()
     if wifi.sta.status() < 5 then
-        print("Network connection lost, trying to reconnect")
-        tmr.alarm(1,2000,0,startWifi)
-        tmr.alarm(2,6000,0,printWifiInfo)
+        retries = retries + 1
+        if (retries < 5) then
+            print("Network connection lost, trying to reconnect. (Attempt "..retries..")")
+            tmr.alarm(1,5000,0,startWifi)
+        else
+            print("Failed to connect to wifi")
+            goToSleep()
+        end
     else
         print("Updating thingspeak channel!")
         dofile("readsensors.lc")
@@ -34,23 +38,9 @@ function updateThingSpeak()
     end
 end 
 
-function comma_value(n) -- credit http://richard.warburton.it
-    local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
-    return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
-end
 
-function round(x)
-    local decimal = (x%1);
-    if decimal>0.5 then
-        return x-decimal+1
-    else
-        return x-decimal
-    end 
-end
+-- start wifi with a 1s delay to let things settle after boot
+tmr.alarm(1,1000,0,startWifi)
 
--- start wifi after 2s
-tmr.alarm(1,2000,0,startWifi)
--- display wifi info after 6s
-tmr.alarm(2,6000,0,printWifiInfo)
--- update thingspeak every 2 minutes
-tmr.alarm(3, APIdelay*1000, 1, updateThingSpeak)
+
+
