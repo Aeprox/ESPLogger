@@ -1,5 +1,6 @@
 -- This code provides some basic helper functions dealing with i2c devices
 -- Much of this code was inspired by Santos and others on esp8266.com
+-- Adapted by Aeprox@github for use in ESPlogger
 
 local moduleName = "i2cutils"
 local M = {}

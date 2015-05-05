@@ -2,7 +2,6 @@
 local sent = false
 local conn=net.createConnection(net.TCP, 0)
 
- 
 print("Connection created")
 conn:connect(80,'api.thingspeak.com')
 print("Opening connection...")
@@ -13,11 +12,9 @@ conn:on("connection", function(conn)
     conn:send("GET http://api.thingspeak.com/update?key="..APIkey.."&field1="..(temp/10).."&field2="..(hum/10).."&field3="..(lux).." HTTP/1.1\r\n")
     conn:send("Host: api.thingspeak.com\r\n") 
     conn:send("Accept: */*\r\n") 
-    conn:send("User-Agent: Mozilla/4.0 (compatible; esp8266 Lua; Windows NT 5.1)\r\n")
     conn:send("\r\n")
 end)
 conn:on("receive", function(conn, payload)
-    --print(payload)
     print("Closing connection...")
     conn:close()
 end)

@@ -3,7 +3,7 @@
 -- Special hat-tip to lady ada - hacker hero - amongst many others
 -- This code is AGPL v3 by gareth@l0l.org.uk and Hamish Cunningham
 -- blah blah blah standard licence conditions apply blah blah blah
--- Addapted by Aeprox for use in ESPlogger
+-- Adapted by Aeprox@github for use in ESPlogger
 
 local i2cutils = require("i2cutils") -- get our helper functions loaded
 
