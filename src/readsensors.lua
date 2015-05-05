@@ -1,37 +1,45 @@
-DHT = require("dht_lib")
-bh1750 = require("bh1750")
-
+-- variables
 hum = 0
 temp = 0
 lux = 0
 
--- init sensors
-bh1750.init(SDA_PIN, SCL_PIN)
+-- read lux sensor
+if luxSensor == "bh1750" then
+    local bh1750 = require("bh1750")
+    bh1750.init(SDA_PIN, SCL_PIN)
+    bh1750.read()
+    bh1750.read() 
+    lux = round(bh1750.getlux())
 
+    bh1750 = nil
+    package.loaded["bh1750"]=nil
+end
+if luxSensor == "tsl2561" then
+    local tsl = require("lux")
+    lux = tsl.getlux()
+    --print(tsl.getlux())
+
+    tsl.releaseResources()
+    tsl = nil
+    package.loaded["tsl"]=nil
+end
 
 -- read data from temp/hum sensor
+local DHT = require("dht_lib")
+
 DHT.read(DHTPIN)
 temp = DHT.getTemperature()
 hum = DHT.getHumidity()
 
--- read lux sensor
-bh1750.read()
-bh1750.read() 
-lux = round(bh1750.getlux())
+DHT = nil
+package.loaded["dht_lib"]=nil
 
--- output to user
-print("Temperature: "..comma_value(temp / 10).." deg C")
+-- output to serial
+print("Temperature: "..(temp / 10).." deg C")
 if hum == nil then
         print("Error reading from DHT11/22")
 else
     
-    print("Humidity: "..comma_value(hum / 10).."%")
+    print("Humidity: "..(hum / 10).."%")
 end
 print("Illuminance: "..(lux).." lx")
-
--- unload sensor modules
-bh1750 = nil
-package.loaded["bh1750"]=nil
-
-DHT = nil
-package.loaded["dht_lib"]=nil

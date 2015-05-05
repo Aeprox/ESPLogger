@@ -12,7 +12,7 @@ end
 -- Print wifi info (or reconnect)
 function checkConnection()
     if wifi.sta.status() < 5 then
-        print("Connection failed, trying to reconnect to "..SSID.." in 5 seconds")
+        print("Connection failed, reconnecting in 5s")
         tmr.alarm(1,5000,0,startWifi)
     else
         print("Connected with ip "..wifi.sta.getip())
@@ -32,12 +32,12 @@ function updateThingSpeak()
             goToSleep()
         end
     else
-        print("Updating thingspeak channel!")
+        print("Reading sensors")
         dofile("readsensors.lc")
+        print("Updating thingspeak channel")
         dofile("thingspeak.lc")
     end
-end 
-
+end
 
 -- start wifi with a 1s delay to let things settle after boot
 tmr.alarm(1,1000,0,startWifi)
