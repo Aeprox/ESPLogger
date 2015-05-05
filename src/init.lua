@@ -20,10 +20,12 @@ function startDatalogger()
 	    print("Wifi connection failed. Reconnecting..")
 	    wifi.setmode(wifi.STATION)
 	    wifi.sta.config(SSID,password)
-	end
-	print("Connected with ip "..wifi.sta.getip())
-	dofile("readsensors.lc")
-	dofile("thingspeak.lc")
+        tmr.alarm(1,5000,0,startDatalogger)
+	else
+    	print("Connected with ip "..wifi.sta.getip())
+    	dofile("readsensors.lc")
+    	dofile("thingspeak.lc")
+    end
 end
 tmr.alarm(0,2000,0, startDatalogger)
 
