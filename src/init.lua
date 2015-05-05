@@ -11,7 +11,7 @@ SCL_PIN = 6 -- BH1750 scl pin, GPIO14
 DHTPIN = 7 --  DHT22 data pin, GPIO13
 
 -- correct values: "bh1750" or "tsl2561"
-luxSensor = "bh1750"
+luxSensor = "tsl2561"
 
 -- **** end of user settings
 

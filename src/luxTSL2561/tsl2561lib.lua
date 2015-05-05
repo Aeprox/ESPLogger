@@ -5,6 +5,7 @@
 -- blah blah blah standard licence conditions apply blah blah blah
 -- Addapted by Aeprox for use in ESPlogger
 
+local i2cutils = require("i2cutils") -- get our helper functions loaded
 
 local moduleName = "tsl2561lib"
 -- the package table, and lots of constants
@@ -35,8 +36,10 @@ local M = {
 }
 _G[moduleName] = M
 
+local busid = 0 -- i2c bus id
+
 -- add a few recursive definitions
-function M.enable(dev_addr) -- enable the device
+local function enable(dev_addr) -- enable the device
   i2cutils.write_reg(
     dev_addr,
     bit.bor(M.TSL2561_COMMAND_BIT, M.TSL2561_REGISTER_CONTROL),
@@ -44,7 +47,7 @@ function M.enable(dev_addr) -- enable the device
   )
 end
 
-function M.disable(dev_addr) -- disable the device
+local function disable(dev_addr) -- disable the device
   i2cutils.write_reg(
     dev_addr,
     bit.bor(M.TSL2561_COMMAND_BIT, M.TSL2561_REGISTER_CONTROL),
@@ -52,7 +55,7 @@ function M.disable(dev_addr) -- disable the device
   )
 end
 
-function M.settimegain(dev_addr, time, gain) -- set the integration time and gain together
+local function settimegain(dev_addr, time, gain) -- set the integration time and gain together
   i2cutils.write_reg(
     dev_addr,
     bit.bor(M.TSL2561_COMMAND_BIT, M.TSL2561_REGISTER_TIMING),
@@ -60,7 +63,7 @@ function M.settimegain(dev_addr, time, gain) -- set the integration time and gai
   )
 end
 
-function M.getFullLuminosity(dev_addr) -- Do the actual reading from the sensor
+local function getFullLuminosity(dev_addr) -- Do the actual reading from the sensor
   local ch0low = i2cutils.read_reg(
     dev_addr,
     bit.bor(M.TSL2561_COMMAND_BIT, M.TSL2561_REGISTER_CHAN0_LOW)
@@ -81,6 +84,25 @@ function M.getFullLuminosity(dev_addr) -- Do the actual reading from the sensor
   )
   ch1=string.byte(ch1low)+(string.byte(ch1high)*256)
   return ch0, ch1
+end
+
+function M.getlux()
+  dev_addr = M.TSL2561_ADDR_FLOAT -- I2C address of device with ADDR pin floating
+  i2c.setup(busid, SDA_PIN , SCL_PIN, i2c.SLOW)
+  result = i2cutils.read_reg(
+    dev_addr,
+    bit.bor(M.TSL2561_COMMAND_BIT, M.TSL2561_REGISTER_ID)
+  )
+  --if string.byte(result) == 0x50 then print("Initialised TSL2561T/FN/CL") end
+  enable(dev_addr)
+  settimegain(dev_addr, M.TSL2561_INTEGRATIONTIME_13MS, M.TSL2561_GAIN_16X)
+  disable(dev_addr)
+  tmr.delay(1000) -- give 1ms for sensor to settle
+  enable(dev_addr)
+  tmr.delay(14000) -- gives 14ms for integration time
+  chan0,chan1 = getFullLuminosity(dev_addr)
+  disable(dev_addr)
+  return chan0, chan1
 end
 
 return M
