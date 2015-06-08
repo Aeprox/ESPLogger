@@ -28,7 +28,8 @@ function startDatalogger()
     	dofile("thingspeak.lc")
     end
 end
-tmr.alarm(0,2000,0, startDatalogger)
+
+tmr.alarm(0,APIdelay*1000,1,startDatalogger)
 
 function goToSleep()
     print("Sleeping for "..APIdelay.."s")

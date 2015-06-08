@@ -27,5 +27,5 @@ conn:on("disconnection", function(conn)
     if sent == false then
         print("Failed to send data.");
     end
-    goToSleep()    
+    --goToSleep()    
 end)
