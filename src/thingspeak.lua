@@ -2,13 +2,13 @@
 local sent = false
 local conn=net.createConnection(net.TCP, 0)
 
-print("Connection created")
+if(outputToSerial) then print("Connection created") end
 conn:connect(80,'api.thingspeak.com')
-print("Opening connection...")
+if(outputToSerial) then print("Opening connection...") end
 
 conn:on("connection", function(conn)
-    print("Connection succeeded")
-    print("Sending data...")
+    if(outputToSerial) then print("Connection succeeded") end
+    if(outputToSerial) then print("Sending data...") end
     if luxSensor == "bh1750" then
         conn:send("GET http://api.thingspeak.com/update?key="..APIkey.."&field1="..(temp/10).."&field2="..(hum/10).."&field3="..(lux0).." HTTP/1.1\r\n")
     end
@@ -20,15 +20,15 @@ conn:on("connection", function(conn)
     conn:send("\r\n")
 end)
 conn:on("receive", function(conn, payload)
-    print("Closing connection...")
+    if(outputToSerial) then print("Closing connection...") end
     conn:close()
 end)
 conn:on("sent",function(conn)
-    print("Data sent")
+    if(outputToSerial) then print("Data sent") end
     sent = true
 end)
 conn:on("disconnection", function(conn)
-    print("Disconnected")
+    if(outputToSerial) then print("Disconnected") end
     if sent == false then
         print("Failed to send data.");
     end

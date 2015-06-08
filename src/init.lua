@@ -9,9 +9,11 @@ function startDatalogger()
 	    wifi.sta.config(SSID,password)
         tmr.alarm(1,5000,0,startDatalogger)
 	else
-    	print("Connected with ip "..wifi.sta.getip())
-    	dofile("readsensors.lc")
-    	dofile("thingspeak.lc")
+        if(outputToSerial) then
+        	print("Connected with ip "..wifi.sta.getip())
+        	dofile("readsensors.lc")
+        	dofile("thingspeak.lc")
+        end
     end
 end
 tmr.alarm(0,APIdelay*1000,1,startDatalogger)
