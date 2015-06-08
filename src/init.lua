@@ -19,6 +19,7 @@ function startDatalogger()
     if wifi.sta.status() < 5 then
 	    print("Wifi connection failed. Reconnecting..")
 	    wifi.setmode(wifi.STATION)
+        wifi.sleeptype(wifi.MODEM_SLEEP)
 	    wifi.sta.config(SSID,password)
         tmr.alarm(1,5000,0,startDatalogger)
 	else
