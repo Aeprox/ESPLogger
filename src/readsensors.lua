@@ -16,9 +16,7 @@ if luxSensor == "bh1750" then
 end
 if luxSensor == "tsl2561" then
     local tsl = require("tsl2561lib")
-    ch0,ch1 = tsl.getchannels()
-    lux0 = ch0
-    lux1 = ch1
+    lux0, lux1 = tsl.getchannels()
     tsl = nil
     package.loaded["tsl"]=nil
 end
@@ -32,10 +30,12 @@ DHT = nil
 package.loaded["dht_lib"]=nil
 
 -- output to serial
-print("Temperature: "..(temp / 10).." deg C")
-if hum == nil then
-        print("Error reading from DHT11/22")
-else
-    print("Humidity: "..(hum / 10).."%")
+if(outputToSerial) then
+    print("Temperature: "..(temp / 10).." deg C")
+    if hum == nil then
+            print("Error reading from DHT11/22")
+    else
+        print("Humidity: "..(hum / 10).."%")
+    end
+    print("Illuminance::: ch0:".. ch0 ..", ch1:"..ch1.." lx")
 end
-print("Illuminance::: ch0:".. ch0 ..", ch1:"..ch1.." lx")

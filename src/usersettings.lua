@@ -1,4 +1,6 @@
 -- **** User settings
+outputToSerial = true
+
 SSID = ""
 password = ""
 

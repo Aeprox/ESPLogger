@@ -1,11 +1,11 @@
 -- datalogger code startpoint
 dofile("usersettings.lua")
-print("Aeprox ESP8266 datalogger v0.4.0 (Compatible with NodeMCU 0.9.6 build 20150406) ")
+print("Aeprox ESP8266 datalogger v0.5 (Compatible with NodeMCU 0.9.6 build 20150406) ")
 function startDatalogger()
     if wifi.sta.status() < 5 then
 	    print("Wifi connection failed. Reconnecting..")
 	    wifi.setmode(wifi.STATION)
-        wifi.sleeptype(wifi.MODEM_SLEEP)
+        wifi.sleeptype(wifi.NONE_SLEEP)
 	    wifi.sta.config(SSID,password)
         tmr.alarm(1,5000,0,startDatalogger)
 	else

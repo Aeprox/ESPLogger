@@ -23,7 +23,6 @@ function M.read(pin)
 
   -- Use Markus Gritsch trick to speed up read/write on GPIO
   local gpio_read = gpio.read
-  
   local bitStream = {}
   for j = 1, 40, 1 do
     bitStream[j] = 0
