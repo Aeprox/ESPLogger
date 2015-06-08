@@ -41,7 +41,7 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-src/init_private/init.lua
+src/private/
 src/devFile.lua
 firmware/blank.bin
 firmware/esp_init_data_default.bin
