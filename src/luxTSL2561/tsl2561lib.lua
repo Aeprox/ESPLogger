@@ -95,11 +95,11 @@ function M.getlux()
   )
   --if string.byte(result) == 0x50 then print("Initialised TSL2561T/FN/CL") end
   enable(dev_addr)
-  settimegain(dev_addr, M.TSL2561_INTEGRATIONTIME_13MS, M.TSL2561_GAIN_16X)
+  settimegain(dev_addr, M.TSL2561_INTEGRATIONTIME_402MS, M.TSL2561_GAIN_16X)
   disable(dev_addr)
   tmr.delay(1000) -- give 1ms for sensor to settle
   enable(dev_addr)
-  tmr.delay(14000) -- gives 14ms for integration time
+  tmr.delay(500000) -- gives 500ms for integration time
   chan0,chan1 = getFullLuminosity(dev_addr)
   disable(dev_addr)
   return chan0, chan1

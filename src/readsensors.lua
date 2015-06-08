@@ -15,7 +15,9 @@ if luxSensor == "bh1750" then
 end
 if luxSensor == "tsl2561" then
     local tsl = require("tsl2561lib")
-    lux = tsl.getlux()
+    ch0,ch1 = tsl.getlux()
+    print("Ch0:".. ch0 ..", ch1:"..ch1)
+    lux = ch0
     tsl = nil
     package.loaded["tsl"]=nil
 end
