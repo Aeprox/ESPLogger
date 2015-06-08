@@ -9,7 +9,12 @@ print("Opening connection...")
 conn:on("connection", function(conn)
     print("Connection succeeded")
     print("Sending data...")
-    conn:send("GET http://api.thingspeak.com/update?key="..APIkey.."&field1="..(temp/10).."&field2="..(hum/10).."&field3="..(lux).." HTTP/1.1\r\n")
+    if luxSensor == "bh1750" then
+        conn:send("GET http://api.thingspeak.com/update?key="..APIkey.."&field1="..(temp/10).."&field2="..(hum/10).."&field3="..(lux0).." HTTP/1.1\r\n")
+    end
+    if luxSensor == "tsl2561" then
+        conn:send("GET http://api.thingspeak.com/update?key="..APIkey.."&field1="..(temp/10).."&field2="..(hum/10).."&field3="..(lux0).."&field4="..(lux1).." HTTP/1.1\r\n")
+    end
     conn:send("Host: api.thingspeak.com\r\n") 
     conn:send("Accept: */*\r\n") 
     conn:send("\r\n")

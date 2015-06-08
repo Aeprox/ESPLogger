@@ -1,7 +1,8 @@
 -- variables
 hum = 0
 temp = 0
-lux = 0
+lux0 = 0
+lux1 = 0
 
 -- read lux sensor
 if luxSensor == "bh1750" then
@@ -9,15 +10,15 @@ if luxSensor == "bh1750" then
     bh1750.init(SDA_PIN, SCL_PIN)
     bh1750.read()
     bh1750.read() 
-    lux = round(bh1750.getlux())
+    lux0 = round(bh1750.getlux())
     bh1750 = nil
     package.loaded["bh1750"]=nil
 end
 if luxSensor == "tsl2561" then
     local tsl = require("tsl2561lib")
     ch0,ch1 = tsl.getlux()
-    print("Ch0:".. ch0 ..", ch1:"..ch1)
-    lux = ch0
+    lux0 = ch0
+    lux1 = ch1
     tsl = nil
     package.loaded["tsl"]=nil
 end
@@ -37,4 +38,4 @@ if hum == nil then
 else
     print("Humidity: "..(hum / 10).."%")
 end
-print("Illuminance: "..(lux).." lx")
+print("Illuminance::: ch0:".. ch0 ..", ch1:"..ch1.." lx")
