@@ -6,7 +6,7 @@ function startlogger()
 	    print("Wifi connection failed. Reconnecting..")
 	    wifi.setmode(wifi.STATION)
 	    wifi.sta.config(SSID,password)
-        tmr.alarm(2,5000,0,startDatalogger)
+        tmr.alarm(2,5000,0,startlogger)
 	else
         if(serialOutput) then
         	print("Connected with ip "..wifi.sta.getip())
