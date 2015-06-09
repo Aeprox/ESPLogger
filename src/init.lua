@@ -10,16 +10,15 @@ function startDatalogger()
 	else
         if(outputToSerial) then
         	print("Connected with ip "..wifi.sta.getip())
-        	dofile("readsensors.lc")
-        	dofile("thingspeak.lc")
         end
+        dofile("readsensors.lc")
+        dofile("thingspeak.lc")
     end
 end
 tmr.alarm(0,APIdelay*1000,1,startDatalogger)
 
 -- utility functions
-function goToSleep() -- activate power savings
+function enterpowersavings() -- activate power savings
     print("'Sleeping' for "..APIdelay.."s")
     --node.dsleep(APIdelay*1000000,1)
-    
 end

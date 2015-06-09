@@ -10,7 +10,7 @@ if luxSensor == "bh1750" then
     bh1750.init(SDA_PIN, SCL_PIN)
     bh1750.read()
     bh1750.read() 
-    lux0 = round(bh1750.getlux())
+    lux0 = bh1750.getlux()
     bh1750 = nil
     package.loaded["bh1750"]=nil
 end
@@ -37,5 +37,5 @@ if(outputToSerial) then
     else
         print("Humidity: "..(hum / 10).."%")
     end
-    print("Illuminance::: ch0:".. ch0 ..", ch1:"..ch1.." lx")
+    print("Illuminance: ch0: ".. ch0 ..", ch1: "..ch1.."")
 end
