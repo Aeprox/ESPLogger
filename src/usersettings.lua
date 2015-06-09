@@ -1,5 +1,5 @@
 -- **** User settings
-outputToSerial = true
+serialOutput = true
 
 SSID = ""
 password = ""
@@ -9,7 +9,10 @@ APIdelay = 120 -- thingspeak update internval in seconds (min: 15s)
 
 DHTPIN = 7 --  DHT22 data pin, GPIO13
 
-luxSensor = "tsl2561" -- correct values: "bh1750" or "tsl2561"
+-- Light sensor, 2 types supported:
+--  0 : BH1750
+--  1 : TSL2561
+luxSensor = 1 
 SDA_PIN = 5 -- lux sda pin, GPIO12
 SCL_PIN = 6 -- lux scl pin, GPIO14
 -- **** end of user settings

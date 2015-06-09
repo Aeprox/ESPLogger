@@ -28,12 +28,6 @@ local M = {
     
     TSL2561_GAIN_0X               = 0x00,   -- No gain
     TSL2561_GAIN_16X              = 0x10,   -- 16x gain
-    
-    TSL2561_LUX_CHSCALE           = 10,     -- Scale channel values by 2^10
-    TSL2561_LUX_CHSCALE_TINT0     = 0x7517, -- 322/11 * 2^TSL2561_LUX_CHSCALE
-    TSL2561_LUX_LUXSCALE          = 14,     -- Scale by 2^14
-    TSL2561_LUX_RATIOSCALE        = 9,      -- Scale ratio by 2^9
-    
 }
 _G[moduleName] = M
 
@@ -100,9 +94,9 @@ function M.getchannels()
   tmr.delay(1000) -- give 1ms for sensor to settle
   enable(dev_addr)
   tmr.delay(500000) -- gives 500ms for integration time
-  chan0,chan1 = getFullLuminosity(dev_addr)
+  ch0,ch1 = getFullLuminosity(dev_addr)
   disable(dev_addr)
-  return chan0, chan1
+  return ch0, ch1
 end
 
 return M
