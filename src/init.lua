@@ -5,7 +5,6 @@ function startDatalogger()
     if wifi.sta.status() < 5 then
 	    print("Wifi connection failed. Reconnecting..")
 	    wifi.setmode(wifi.STATION)
-        wifi.sleeptype(wifi.LIGHT_SLEEP)
 	    wifi.sta.config(SSID,password)
         tmr.alarm(1,5000,0,startDatalogger)
 	else
@@ -19,7 +18,8 @@ end
 tmr.alarm(0,APIdelay*1000,1,startDatalogger)
 
 -- utility functions
-function goToSleep()
-    print("Sleeping for "..APIdelay.."s")
-    node.dsleep(APIdelay*1000000,1)
+function goToSleep() -- activate power savings
+    print("'Sleeping' for "..APIdelay.."s")
+    --node.dsleep(APIdelay*1000000,1)
+    
 end

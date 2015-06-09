@@ -7,8 +7,10 @@ conn:connect(80,'api.thingspeak.com')
 if(outputToSerial) then print("Opening connection...") end
 
 conn:on("connection", function(conn)
-    if(outputToSerial) then print("Connection succeeded") end
-    if(outputToSerial) then print("Sending data...") end
+    if(outputToSerial) then 
+        print("Connection succeeded")
+        print("Sending data...")
+    end
     if luxSensor == "bh1750" then
         conn:send("GET http://api.thingspeak.com/update?key="..APIkey.."&field1="..(temp/10).."&field2="..(hum/10).."&field3="..(lux0).." HTTP/1.1\r\n")
     end
@@ -28,9 +30,11 @@ conn:on("sent",function(conn)
     sent = true
 end)
 conn:on("disconnection", function(conn)
-    if(outputToSerial) then print("Disconnected") end
-    if sent == false then
-        print("Failed to send data.");
+    if(outputToSerial) then 
+        print("Disconnected") 
+        if sent == false then
+            print("Failed to send data.");
+        end
     end
-    --goToSleep()    
+    goToSleep()    
 end)
