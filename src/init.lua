@@ -12,9 +12,13 @@ function startlogger()
         	print("Connected with ip "..wifi.sta.getip())
         end
         dofile("readsensors.lc")
-        dofile("thingspeak.lc")
+        tmr.alarm(1,500,0,send) -- small delay to allow for garbage collection in the background
     end
 end
+function send()
+    dofile("thingspeak.lc")
+end
+
 tmr.alarm(0,APIdelay*1000,1,startlogger)
 
 -- activate power savings
