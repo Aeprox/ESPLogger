@@ -27,10 +27,10 @@ con:on("receive", function(con, payload)
     sent = true
 end)
 con:on("disconnection", function(con)
-    if(serialOut) then
-        if sent == false then
-            print("Failed to send data.")
-        else
+    if sent == false then
+        print("Failed to send data.")
+    else
+        if(serialOut) then
             print("Data sent successfully!")
         end
     end
