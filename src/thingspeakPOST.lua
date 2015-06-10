@@ -22,7 +22,7 @@ con:on("connection", function(con)
     con:send(fields.."\r\n\r\n")
 end)
 con:on("receive", function(con, payload)
-    if(serialOut) then print("payload:"..payload) end
+    if(debug and serialOut) then print("payload:"..payload) end
     con:close()
     sent = true
 end)
