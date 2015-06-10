@@ -41,7 +41,6 @@ local function enable(dev_addr) -- enable the device
     M.TSL2561_CONTROL_POWERON
   )
 end
-
 local function disable(dev_addr) -- disable the device
   i2cutils.write_reg(
     dev_addr,
@@ -49,7 +48,6 @@ local function disable(dev_addr) -- disable the device
     M.TSL2561_CONTROL_POWEROFF
   )
 end
-
 local function settimegain(dev_addr, time, gain) -- set the integration time and gain together
   i2cutils.write_reg(
     dev_addr,
@@ -57,7 +55,6 @@ local function settimegain(dev_addr, time, gain) -- set the integration time and
     bit.bor(time, gain)
   )
 end
-
 local function getFullLuminosity(dev_addr) -- Do the actual reading from the sensor
   local ch0low = i2cutils.read_reg(
     dev_addr,
@@ -80,7 +77,6 @@ local function getFullLuminosity(dev_addr) -- Do the actual reading from the sen
   ch1=string.byte(ch1low)+(string.byte(ch1high)*256)
   return ch0, ch1
 end
-
 function M.getchannels()
   dev_addr = M.TSL2561_ADDR_FLOAT 
   i2c.setup(busid, SDA_PIN , SCL_PIN, i2c.SLOW)
