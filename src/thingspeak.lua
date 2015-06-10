@@ -1,39 +1,40 @@
 -- sends temp, hum and lux to thinkspeak channel
 local sent = false
-local conn=net.createConnection(net.TCP, 0)
-conn:on("connection", function(conn)
-    if(serialOutput) then 
-        print("Connection succeeded")
-        print("Sending data...")
-    end
+local con=net.createConnection(net.TCP, 0)
+con:on("connection", function(conn)
+    if(serialOut) then print("Sending data...") end
 
-    conn:send("GET http://api.thingspeak.com/update?key="..APIkey.."&field1="..(temp/10).."&field2="..(hum/10))
-    if luxSensor == 0 then
-        conn:send("&field3="..(lux0).." HTTP/1.1\r\n")
+    conn:send("GET http://api.thingspeak.com/update?key="..APIkey.."&headers=false&field1="..(t/10).."&field2="..(h/10))
+    if lxSensor == 0 then
+        con:send("&field3="..(lx0).." HTTP/1.1\r\n")
     end
-    if luxSensor == 1 then
-        conn:send("&field3="..(lux0).."&field4="..(lux1).." HTTP/1.1\r\n")
+    if lxSensor == 1 then
+        con:send("&field3="..(lx0).."&field4="..(lx1).." HTTP/1.1\r\n")
     end
     
-    conn:send("Host: api.thingspeak.com\r\n")
-    conn:send("Accept: */*\r\n")
-    --conn:send("User-Agent: Mozilla/4.0 (compatible; esp8266 Lua;)\r\n")
-    conn:send("\r\n")
+    con:send("Host: api.thingspeak.com\r\n")
+    con:send("Accept: text/plain\r\n")
+    con:send("\r\n\r\n")
 end)
-conn:on("receive", function(conn, payload)
-    conn:close()
-end)
-conn:on("sent",function(conn)
-    if(serialOutput) then print("Data sent successfulfy!") end
+con:on("receive", function(conn, payload)
+   if(debug and serialOut) then print("payload:"..payload) end
+    con:close()
     sent = true
 end)
-conn:on("disconnection", function(conn)
+con:on("sent",function(conn)
+    if(serialOut) then print("Data sent successfully!") end
+    sent = true
+end)
+con:on("disconnection", function(conn)
     if sent == false then
-        if(serialOutput) then print("Failed to send data.") end
+        print("Failed to send data.")
+    else
+        if(serialOut) then
+            print("Data sent successfully!")
+        end
     end
-    conn = nil
+    con = nil
     sent = nil
-    pwrDown()
 end)
 
-conn:connect(80,'api.thingspeak.com')
+con:connect(80,'api.thingspeak.com')
