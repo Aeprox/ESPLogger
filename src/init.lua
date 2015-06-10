@@ -4,7 +4,7 @@ print("Aeprox ESP8266 datalogger v0.6 (Compatible with NodeMCU 0.9.6 build 20150
 h,t,lx0,lx1 = 0
 dofile("usersettings.lua")
 
-function initlogger()
+function dologger()
     if wifi.sta.status() < 5 then
 	    print("Wifi connection failed. Reconnecting..")
 	    wifi.setmode(wifi.STATION)
@@ -18,9 +18,12 @@ function initlogger()
     end
 end
 
-local function startupmagic()
-    r,u,t=file.fsinfo() print("Total : "..t.." bytes\r\nUsed  : "..u.." bytes\r\nRemain: "..r.." bytes\r\n") r=nil u=nil t=nil
-    _dir=function() local k,v,l print("~~~File ".."list START~~~") for k,v in pairs(file.list()) do l = string.format("%-15s",k) print(l.." : "..v.." bytes") end print("~~~File ".."list END~~~") end _dir() _dir=nil
+local function initlogger()
+    local k,v,l 
+    for k,v in pairs(file.list()) do
+        -- nothing at all. This solves the memory issues with the thingspeak module somehow? MAGIC! 
+    end
+    k=nil v=nil l=nil
+    tmr.alarm(0,APIdelay*1000,1,dologger)
 end
-startupmagic()
-tmr.alarm(0,APIdelay*1000,1,initlogger)
+initlogger()
