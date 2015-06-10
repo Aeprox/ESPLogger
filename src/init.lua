@@ -12,7 +12,7 @@ function startlogger()
         	print("Connected with ip "..wifi.sta.getip())
         end
         dofile("readsensors.lc")
-        tmr.alarm(1,500,0,send) -- small delay to allow for garbage collection in the background
+        dofile("thingspeakPOST.lc")
     end
 end
 function send()

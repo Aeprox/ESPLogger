@@ -45,3 +45,4 @@ src/private/
 src/devFile.lua
 firmware/blank.bin
 firmware/esp_init_data_default.bin
+minified/luxTSL2561/README.mkd
