@@ -85,7 +85,7 @@ function M.getchannels()
     bit.bor(M.TSL2561_COMMAND_BIT, M.TSL2561_REGISTER_ID)
   )
   enable(dev_addr)
-  settimegain(dev_addr, M.TSL2561_INTEGRATIONTIME_402MS, M.TSL2561_GAIN_16X)
+  settimegain(dev_addr, lxIntTime, M.TSL2561_GAIN_16X)
   disable(dev_addr)
   tmr.delay(1000) -- give 1ms for sensor to settle
   enable(dev_addr)
