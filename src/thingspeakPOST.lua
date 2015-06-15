@@ -11,10 +11,9 @@ con:on("connection", function(con)
     con:send("X-THINGSPEAKAPIKEY: "..APIkey.."\r\n")
     con:send("Content-Type: application/x-www-form-urlencoded\r\n")
     fields = "headers=false&field1="..(t/10).."&field2="..(h/10)
-    if lxSensor == 0 then
+    if lxSensor == 0 or lxSensor == 1 then
         fields = fields.."&field3="..(lx0)
-    end
-    if lxSensor == 1 then
+    elseif lxSensor == 2 then
         fields = fields.."&field3="..(lx0).."&field4="..(lx1)
     end
     length = string.len(fields)
