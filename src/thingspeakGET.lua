@@ -19,10 +19,8 @@ end)
 con:on("receive", function(conn, payload)
    if(debug and serialOut) then print("payload:"..payload) end
     con:close()
-    sent = true
 end)
 con:on("sent",function(conn)
-    if(serialOut) then print("Data sent successfully!") end
     sent = true
 end)
 con:on("disconnection", function(conn)
