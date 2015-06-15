@@ -10,7 +10,7 @@ SCL_PIN = 6 -- lux scl pin, GPIO14
 --  0   : no lux sensor
 --  1   : BH1750
 --  2   : TSL2561
-lxSensor = 1
+lxSensor = 0
 -- TSL2561 integration time settings
 --  0   :   13.7ms
 --  1   :   101ms
