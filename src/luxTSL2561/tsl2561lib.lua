@@ -20,14 +20,7 @@ local M = {
     TSL2561_REGISTER_CHAN0_LOW    = 0x0C,
     TSL2561_REGISTER_CHAN0_HIGH   = 0x0D,
     TSL2561_REGISTER_CHAN1_LOW    = 0x0E,
-    TSL2561_REGISTER_CHAN1_HIGH   = 0x0F,
-    
-    TSL2561_INTEGRATIONTIME_13MS  = 0x00,   -- 13.7ms
-    TSL2561_INTEGRATIONTIME_101MS = 0x01,   -- 101ms
-    TSL2561_INTEGRATIONTIME_402MS = 0x02,   -- 402ms
-    
-    TSL2561_GAIN_0X               = 0x00,   -- No gain
-    TSL2561_GAIN_16X              = 0x10,   -- 16x gain
+    TSL2561_REGISTER_CHAN1_HIGH   = 0x0F
 }
 _G[moduleName] = M
 
