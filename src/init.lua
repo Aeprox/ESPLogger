@@ -1,4 +1,4 @@
-print("Aeprox ESP8266 datalogger V1.0-RC1 (Compatible with NodeMCU 0.9.6 build 20150406) ")
+print("Aeprox ESP8266 datalogger V1.0 (Compatible with NodeMCU 0.9.6 build 20150406) ")
 
 -- variables
 h=0
