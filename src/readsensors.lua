@@ -2,9 +2,7 @@ if readV then
     Vdd = adc.readvdd33()
 end
 -- read lux sensor
-if lxSensor == 0 then
-    lx0 = -1
-elseif lxSensor == 1 then
+if lxSensor == 1 then
     local bh1750 = require("bh1750")
     bh1750.init(SDA_PIN, SCL_PIN)
     bh1750.read()bh1750.read() 
