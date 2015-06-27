@@ -15,12 +15,5 @@ local function dologger()
         dofile("thingspeakPOST.lc")
     end
 end
-local function initlogger()
-    local k,v,l 
-    for k,v in pairs(file.list()) do
-        -- nothing at all. This solves the memory issues with the thingspeak module somehow? MAGIC! 
-    end
-    k=nil v=nil l=nil
-    tmr.alarm(0,APIdelay*1000,1,dologger)
+tmr.alarm(0,5000,0,dologger)
 end
-initlogger()
