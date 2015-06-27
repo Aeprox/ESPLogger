@@ -1,23 +1,20 @@
-print("Aeprox ESP8266 datalogger V1.0 (Compatible with NodeMCU 0.9.6 build 20150406) ")
+print("Aeprox ESP8266 datalogger V1.1-dev (Compatible with NodeMCU 0.9.6 build 20150627) ")
 
 -- variables
 h,t,lx0,lx1=0,0,0,0
 dofile("usersettings.lua")
 
-function dologger()
+local function dologger()
     if wifi.sta.status() < 5 then
-	    print("Wifi connection failed. Reconnecting..")
-	    wifi.setmode(wifi.STATION)
-	    wifi.sta.config(SSID,password)
-	else
-        if(serialOut) then
-        	print("Connected with ip "..wifi.sta.getip())
-        end
+        print("Wifi connection failed. Reconnecting..")
+        wifi.setmode(wifi.STATION)
+        wifi.sta.config(SSID,password)
+        tmr.alarm(1,5000,0,dologger)
+    else
         dofile("readsensors.lc")
         dofile("thingspeakPOST.lc")
     end
 end
-
 local function initlogger()
     local k,v,l 
     for k,v in pairs(file.list()) do

@@ -16,16 +16,11 @@ elseif lxSensor == 2 then
 end
 
 -- read data from temp/hum sensor
-local DHT = require("dht_lib")
-DHT.read(DHTPIN)
-t = DHT.getTemperature()
-h = DHT.getHumidity()
-DHT = nil
-package.loaded["dht_lib"]=nil
+status,t,h = dht.readxx(DHTPIN)
 
 -- output to serial
 if(serialOut) then
-    print("Temp.: "..(t / 10).."°C")
-    print("Humidity: "..(h / 10).."%")
+    print("Temp.: "..(t).."°C")
+    print("Humidity: "..(h).."%")
     print("Illuminance: ch0: ".. lx0 ..", ch1: "..lx1)
 end

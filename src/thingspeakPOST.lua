@@ -10,7 +10,7 @@ con:on("connection", function(con)
     con:send("POST /update HTTP/1.1\r\nHost: api.thingspeak.com\r\n")
     con:send("X-THINGSPEAKAPIKEY: "..APIkey.."\r\n")
     con:send("Content-Type: application/x-www-form-urlencoded\r\n")
-    fields = "headers=false&field1="..(t/10).."&field2="..(h/10)
+    fields = "headers=false&field1="..(t).."&field2="..(h)
     if lxSensor == 0 or lxSensor == 1 then
         fields = fields.."&field3="..(lx0)
     elseif lxSensor == 2 then
