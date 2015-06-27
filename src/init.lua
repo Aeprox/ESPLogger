@@ -1,7 +1,7 @@
 print("Aeprox ESP8266 datalogger V1.1-dev (Compatible with NodeMCU 0.9.6 build 20150627) ")
 
 -- variables
-h,t,lx0,lx1=0,0,0,0
+h,t,lx0,lx1,Vdd=0,0,0,0,0
 dofile("usersettings.lua")
 
 local function dologger()

@@ -16,6 +16,9 @@ con:on("connection", function(con)
     elseif lxSensor == 2 then
         fields = fields.."&field3="..(lx0).."&field4="..(lx1)
     end
+    if readV then
+        fields = fields.."&field5="..(Vdd)
+    end
     length = string.len(fields)
     con:send("Content-Length: "..length.."\r\n\r\n")
     con:send(fields.."\r\n\r\n")

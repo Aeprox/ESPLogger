@@ -1,3 +1,6 @@
+if readV then
+    Vdd = adc.readvdd33()
+end
 -- read lux sensor
 if lxSensor == 0 then
     lx0 = -1
@@ -23,4 +26,5 @@ if(serialOut) then
     print("Temp.: "..(t).."°C")
     print("Humidity: "..(h).."%")
     print("Illuminance: ch0: ".. lx0 ..", ch1: "..lx1)
+    print("Vdd: "..Vdd)
 end

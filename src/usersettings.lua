@@ -25,5 +25,6 @@ lxIntTime = 2
 --  0   :   no gain (1x)
 --  16   :   16x
 lxGain = 0
+readV = false
 
 serialOut = true
