@@ -3,40 +3,46 @@ local sent = false
 local con=net.createConnection(net.TCP, 0)
 con:on("connection", function(con)
     if(serialOut) then 
-        print("Connection succeeded")
-        print("Sending data...")
+        print("Connection succeeded\r\nSending data...")
     end
-    
-    con:send("POST /update HTTP/1.1\r\nHost: api.thingspeak.com\r\n")
-    con:send("X-THINGSPEAKAPIKEY: "..APIkey.."\r\n")
-    con:send("Content-Type: application/x-www-form-urlencoded\r\n")
-    fields = "headers=false&field1="..(t).."&field2="..(h)
-    if lxSensor == 0 or lxSensor == 1 then
-        fields = fields.."&field3="..(lx0)
+    local temp = {}  -- table to hold strings
+    table.insert(temp,"headers=false&field1="..(t).."&field2="..(h))
+    if lxSensor == 1 then
+        table.insert(temp,"&field3="..(lx0))
     elseif lxSensor == 2 then
-        fields = fields.."&field3="..(lx0).."&field4="..(lx1)
+        table.insert(temp,"&field3="..(lx0).."&field4="..(lx1))
     end
     if readV then
-        fields = fields.."&field5="..(Vdd)
+        table.insert(temp,"&field5="..(Vdd))
     end
+    local fields = table.concat(temp)
     length = string.len(fields)
-    con:send("Content-Length: "..length.."\r\n\r\n")
-    con:send(fields.."\r\n\r\n")
+
+    local temp = {}
+    table.insert(temp, "POST /update HTTP/1.1\r\n")
+    table.insert(temp, "Host: api.thingspeak.com\r\n")
+    table.insert(temp, "X-THINGSPEAKAPIKEY: "..APIkey.."\r\n")
+    table.insert(temp, "Content-Type: application/x-www-form-urlencoded\r\n")
+    table.insert(temp, "Content-Length: "..length.."\r\n\r\n")
+    table.insert(temp, fields)
+    table.insert(temp, "\r\n\r\n")
+    local post = table.concat(temp)
+    
+    con:send(post)
 end)
 con:on("receive", function(con, payload)
-    if(debug and serialOut) then print("payload:"..payload) end
+    if(debug and serialOut) then print("payload:") print(payload) end
     con:close()
     sent = true
 end)
 con:on("disconnection", function(con)
-    if sent == false then
-        print("Failed to send data.")
-    else
-        if(serialOut) then
-            print("Data sent successfully!")
+    if serialOut then
+        if sent then
+            print("Data sent")
+        else 
+            print("Failed to send data.")
         end
     end
-    con = nil
-    sent = nil
+    gotosleep()
 end)
 con:connect(80,'api.thingspeak.com')
