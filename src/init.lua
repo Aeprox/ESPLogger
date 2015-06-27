@@ -15,7 +15,7 @@ local function dologger()
         dofile("thingspeakPOST.lc")
     end
 end
-tmr.alarm(0,5000,0,dologger)
+tmr.alarm(0,2000,0,dologger)
 
 function gotosleep()
     if(serialOut) then print("Taking a "..APIdelay.." second nap") end
