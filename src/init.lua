@@ -16,4 +16,9 @@ local function dologger()
     end
 end
 tmr.alarm(0,5000,0,dologger)
+
+function gotosleep()
+    if(serialOut) then print("Taking a "..APIdelay.." second nap") end
+    node.dsleep(APIdelay*1000000)
+    --tmr.alarm(0,APIdelay*1000,0,donetwork)
 end
