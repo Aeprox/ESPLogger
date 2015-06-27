@@ -6,19 +6,38 @@ dofile("usersettings.lua")
 
 local function dologger()
     if wifi.sta.status() < 5 then
-        print("Wifi connection failed. Reconnecting..")
-        wifi.setmode(wifi.STATION)
-        wifi.sta.config(SSID,password)
-        tmr.alarm(1,5000,0,dologger)
+        print("Wifi connection failed.")
+        tmr.alarm(1,3000,0,dologger)
     else
         dofile("readsensors.lc")
         dofile("thingspeakPOST.lc")
     end
 end
-tmr.alarm(0,2000,0,dologger)
+
+local function initlogger()
+    -- always make sure we're in station mode
+    if(wifi.getmode() ~= wifi.STATION) then wifi.setmode(wifi.STATION) end
+    
+    -- check if current config != config in usersettings
+    conf_ssid, conf_password = wifi.sta.getconfig()
+    if((conf_ssid~=SSID) or (conf_password~=password)) then
+        wifi.sta.config(SSID,password,0)
+    end
+    
+    --  read Vdd before wifi starts
+    if readV then
+        Vdd = adc.readvdd33()
+    end
+    -- enable wifi 
+    wifi.sta.connect()
+    
+    tmr.alarm(0,3000,0,dologger)
+end
+initlogger()
 
 function gotosleep()
     if(serialOut) then print("Taking a "..APIdelay.." second nap") end
+    wifi.sta.disconnect()
     node.dsleep(APIdelay*1000000)
     --tmr.alarm(0,APIdelay*1000,0,donetwork)
 end

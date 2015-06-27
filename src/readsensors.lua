@@ -1,6 +1,3 @@
-if readV then
-    Vdd = adc.readvdd33()
-end
 -- read lux sensor
 if lxSensor == 1 then
     local bh1750 = require("bh1750")

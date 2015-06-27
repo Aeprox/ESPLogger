@@ -34,7 +34,7 @@ APIdelay = 30 -- thingspeak update internval in seconds (min: 15s)
     --  16   :   16x
     lxGain = 0
 
-    -- Read Vdd or not. CURRENTLY NOT SUPPORTED. DO NOT MODIFY
-    readV = false
+    -- Read Vdd or not
+    readV = true
 
 serialOut = true
