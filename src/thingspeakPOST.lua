@@ -27,7 +27,7 @@ con:on("connection", function(con)
     table.insert(temp, fields)
     table.insert(temp, "\r\n\r\n")
     local post = table.concat(temp)
-    
+    if(debug and serialOut) then print(post) end
     con:send(post)
 end)
 con:on("receive", function(con, payload)
