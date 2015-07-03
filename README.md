@@ -10,7 +10,7 @@ This project is licensed under the terms of the MIT license. See full license in
 * A USB-to-TTL or arduino to flash the ESP module
 
 
-![ESPLogger schematic](https://github.com/Aeprox/ESPLogger/blob/master/hardware/ESPLogger_schema.png "ESPLogger schematic")
+![ESPLogger schematic](/hardware/ESPLogger_schema.png "ESPLogger schematic")
 
 ##Software
 * [nodeMCU firmware](https://github.com/nodemcu/nodemcu-firmware)
