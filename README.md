@@ -1,5 +1,5 @@
 # ESPLogger
-An IoT project using an ESP8266 with slightly adapted nodeMCU firmware (based on build 20150406), to read sensor values and send them to Thingspeak.
+An IoT project using an ESP8266 wifi-module to read temperature/humidity/illuminance sensor values and send them to Thingspeak. This project is written in [Lua](http://www.lua.org/) and uses the [nodeMCU firmware](https://github.com/nodemcu/nodemcu-firmware) to run lua on the ESP8266.
 
 This project is licensed under the terms of the MIT license. See full license in LICENSE.md
 
@@ -7,8 +7,10 @@ This project is licensed under the terms of the MIT license. See full license in
 * Any ESP8266 module with GPIO12,13 and 14 pinned out (eg ESP-07,ESP-12)
 * DHT22 temperature and humidty sensor
 * Supports BH1750fvi and TSL2561 Illuminance sensor
+* A USB-to-TTL or arduino to flash the ESP module
 
-TODO: hardware connections
+
+![ESPLogger schematic](https://github.com/Aeprox/ESPLogger/blob/master/hardware/ESPLogger_schema.png "ESPLogger schematic")
 
 ##Software
 * [nodeMCU firmware](https://github.com/nodemcu/nodemcu-firmware)
@@ -34,14 +36,13 @@ TODO: hardware connections
 7. Compile all files except usersettings.lua and init.lua to .lc files and delete the original .lua files. You may have to reboot sometimes to clear some heap when the module won't compile the files
 8. Reboot and watch the serial interface to see the magic happen.
 
-If all went well you should now start seeing text on the serial interface (baudrate 9600). If it keeps reconnecting, you might have network issues. Try using some of the nodeMCU API commands to figure it out and send me an Issue on github.
+If all went well you should now start seeing text on the serial interface (baudrate 9600). If it keeps reconnecting, you might have network issues. Try using some of the nodeMCU API commands to figure it out and/or send me an Issue on github.
 
 # Known issues
 1. Some cheap chinese modules come with incorrect silkscreen and wrong pin-numbering. Double-check
-2. The esp8266 can't connect to AES-protected networks afaik?
-3. Weird crashes and memory issues? Try using the firmware built with unneeded modules disabled found in the firmware folder.
+2. The esp8266 can't connect to AES-protected networks (afaik? user input is welcome!)
+3. Weird crashes? Memory issues? Send us a an issue report on github please.
 
 Thanks to:
 
-https://github.com/nodemcu/nodemcu-firmware 
-https://github.com/hamishcunningham/fishy-wifi
+[nodeMCU firmware](https://github.com/nodemcu/nodemcu-firmware) & [TSL2561 library](https://github.com/hamishcunningham/fishy-wifi)
