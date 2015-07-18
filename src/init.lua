@@ -1,4 +1,5 @@
 print("Aeprox ESP8266 datalogger V1.1-dev (Compatible with NodeMCU 0.9.6 build 20150627) ")
+tmr.delay(2000) -- never remove this during dev
 
 -- variables
 h,t,lx0,lx1,Vdd=0,0,0,0,0
