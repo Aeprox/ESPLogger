@@ -4,7 +4,13 @@ password = ""
 
 -- Thingspeak settings
 APIkey = "" -- thingspeak API write key for channel
-APIdelay = 30 -- thingspeak update internval in seconds (min: 15s)
+APIdelay = 30 -- thingspeak update internval in seconds (minimum imposed by thingspeak: 15s)
+
+-- Serial output
+serialOut = true
+
+-- sleep or stay awake inbetween updates
+sleepEnabled = true
 
 -- Sensor settings
     DHTPIN = 7 --  DHT22 data pin, GPIO13
@@ -36,5 +42,3 @@ APIdelay = 30 -- thingspeak update internval in seconds (min: 15s)
 
     -- Read Vdd or not
     readV = true
-
-serialOut = true

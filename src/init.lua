@@ -1,5 +1,4 @@
 print("Aeprox ESP8266 datalogger V1.1-dev (Compatible with NodeMCU 0.9.6 build 20150627) ")
-tmr.delay(2000) -- never remove this during dev
 
 -- variables
 h,t,lx0,lx1,Vdd=0,0,0,0,0
@@ -34,11 +33,16 @@ local function initlogger()
     
     tmr.alarm(0,3000,0,dologger)
 end
-initlogger()
+
+tmr.alarm(0,2000,0,initlogger) -- never remove this during dev
 
 function gotosleep()
-    if(serialOut) then print("Taking a "..APIdelay.." second nap") end
+    if(serialOut and sleepEnabled) then print("Taking a "..APIdelay.." second nap") end
+    if(serialOut and not sleepEnabled) then print("Taking a "..APIdelay.." second break") end
     wifi.sta.disconnect()
-    node.dsleep(APIdelay*1000000)
-    --tmr.alarm(0,APIdelay*1000,0,donetwork)
+    if sleepEnabled then 
+        node.dsleep(APIdelay*1000000)
+    else
+        tmr.alarm(0,APIdelay*1000,0,initlogger)
+    end
 end
