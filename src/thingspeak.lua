@@ -7,8 +7,10 @@ _G[moduleName] = M
 local sent = false
 local receivedReply = false
 local con
+local onFinished
 
-function M.init()
+function M.init(callback)
+    onFinished = callback
     con = net.createConnection(net.TCP, 0)
     con:on("receive", function(connection, payload)
         if (debug and serialOut) then
@@ -27,11 +29,12 @@ function M.init()
         if (serialOut and (not receivedReply)) then
                 print("Didn't receive a reply.")
         end
-        gotosleep()
+        --gotosleep()
+        onFinished()
     end)
     con:on("connection", function(connection)
         if serialOut then 
-            print("Connection succeeded\r\nSending data...")
+            print("Connection succeeded")
         end
         -- construct fields string
         local temp = {}  
