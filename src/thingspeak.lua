@@ -21,21 +21,20 @@ function M.init()
         end
     end)
     con:on("reconnection", function(connection)
-        if (debug and serialOut) then print("Reconnecting") end
+        if serialOut then print("Reconnecting") end
     end)
     con:on("disconnection", function(connection)
-        
         if (serialOut and (not receivedReply)) then
-                print("Didn't receive a reply")
+                print("Didn't receive a reply.")
         end
-        con = nil
         gotosleep()
     end)
     con:on("connection", function(connection)
-        if(serialOut) then 
+        if serialOut then 
             print("Connection succeeded\r\nSending data...")
         end
-        local temp = {}  -- table to hold strings
+        -- construct fields string
+        local temp = {}  
         table.insert(temp,"headers=false&field1="..(t).."&field2="..(h))
         if lxSensor == 1 then
             table.insert(temp,"&field3="..(lx0))
@@ -47,8 +46,9 @@ function M.init()
         end
         local fields = table.concat(temp)
         local length = string.len(fields)
-        
-        local temp = {}
+
+        -- construct http header and body
+        temp = {}
         table.insert(temp, "POST /update HTTP/1.1\r\n")
         table.insert(temp, "Host: api.thingspeak.com\r\n")
         table.insert(temp, "X-THINGSPEAKAPIKEY: "..APIkey.."\r\n")
@@ -58,9 +58,11 @@ function M.init()
         table.insert(temp, fields)
         table.insert(temp, "\r\n\r\n")
         local post = table.concat(temp)
-        if(debug and serialOut) then print("Post:") print(post) end
+
+        -- send the data packet
+        if(debug and serialOut) then print("Sending data:") print(post) end
         connection:send(post, function(connection)
-            if (debug and serialOut) then print("Sent data") sent = true end
+            if serialOut then print("Sent data") sent = true end
         end)   
     end)
 end
