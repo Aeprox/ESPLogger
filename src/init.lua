@@ -7,7 +7,7 @@ dofile("usersettings.lua")
 local function dologger()
     if wifi.sta.status() < 5 then
         print("Wifi connection failed.")
-        tmr.alarm(1,3000,0,dologger)
+        tmr.alarm(2,3000,0,dologger)
     else
         dofile("readsensors.lc")
         dofile("thingspeakPOST.lc")
@@ -31,16 +31,16 @@ local function initlogger()
     -- enable wifi 
     wifi.sta.connect()
     
-    tmr.alarm(0,3000,0,dologger)
+    tmr.alarm(1,3000,0,dologger)
 end
 
 tmr.alarm(0,2000,0,initlogger) -- never remove this during dev
 
 function gotosleep()
     if(serialOut and sleepEnabled) then print("Taking a "..APIdelay.." second nap") end
-    if(serialOut and not sleepEnabled) then print("Taking a "..APIdelay.." second break") end
+    if(serialOut and not sleepEnabled) then print("Waiting "..APIdelay.." second before updating") end
     wifi.sta.disconnect()
-    if sleepEnabled then 
+    if sleepEnabled then
         node.dsleep(APIdelay*1000000)
     else
         tmr.alarm(0,APIdelay*1000,0,initlogger)
