@@ -1,6 +1,6 @@
 -- ***************************************************************************
 -- Thingspeak module for ESP8266 with nodeMCU
--- BH1750 compatible tested 2015-07-20 with build 20150627
+-- tested 2015-07-20 with build 20150627
 --
 -- Written by Aeprox @ github
 --
@@ -70,10 +70,6 @@ function M.init(callback)
         if onFinished ~= nil then onFinished() end
     end)
     con:on("connection", function(connection)
-        if serialOut then 
-            print("Connection succeeded")
-        end
-        
         if(debug and serialOut) then print("Sending data:") print(packet) end
         connection:send(packet, function(connection)
             if serialOut then print("Sent data") sent = true end
