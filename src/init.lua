@@ -1,10 +1,9 @@
 print("Aeprox ESP8266 datalogger V1.1-dev (Compatible with NodeMCU 0.9.6 build 20150627) ")
 
 -- variables
-h,t,lx0,lx1,Vdd=0,0,0,0,0
+sensorValues = {} 
 dofile("usersettings.lua")
 local thingspeak = require("thingspeak")
-
 
 local function dologger()
     if wifi.sta.status() < 5 then
@@ -12,7 +11,7 @@ local function dologger()
         tmr.alarm(2,3000,0,dologger)
     else
         dofile("readsensors.lc")
-        thingspeak.update()
+        thingspeak.update(sensorValues)
     end
 end
 

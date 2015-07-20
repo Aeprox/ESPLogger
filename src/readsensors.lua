@@ -23,3 +23,10 @@ if(serialOut) then
     print("Illuminance: ch0: ".. lx0 ..", ch1: "..lx1)
     print("Vdd: "..Vdd)
 end
+
+--output to thingspeak
+sensorValues["field1"] = t
+sensorValues["field2"] = h
+sensorValues["field3"] = lx0
+sensorValues["field4"] = lx1
+sensorValues["field5"] = Vdd

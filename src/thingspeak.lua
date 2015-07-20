@@ -4,23 +4,22 @@ local moduleName = "thingspeak"
 local M = {}
 _G[moduleName] = M
 
+local initialised = false
 local sent = false
 local receivedReply = false
 local con
+local packet
 local onFinished
+local sensorValues = {}
 
 local function buildPacket()
-    -- construct fields string
+    -- construct url-encoded string containing sensor values
     local temp = {}  
-    table.insert(temp,"headers=false&field1="..(t).."&field2="..(h))
-    if lxSensor == 1 then
-        table.insert(temp,"&field3="..(lx0))
-    elseif lxSensor == 2 then
-        table.insert(temp,"&field3="..(lx0).."&field4="..(lx1))
+    table.insert(temp,"headers=false") -- reduce number of headers in reply 
+    for i, v in pairs(sensorValues) do
+        table.insert(temp, "&"..i.."="..v)
     end
-    if readV then
-        table.insert(temp,"&field5="..(Vdd))
-    end
+    
     local fields = table.concat(temp)
     local length = string.len(fields)
 
@@ -35,11 +34,14 @@ local function buildPacket()
     table.insert(temp, fields)
     table.insert(temp, "\r\n\r\n")
    
-    return table.concat(temp)
+    packet = table.concat(temp)
 end
 
 function M.init(callback)
+    -- register callback function to be called when done sending
     onFinished = callback
+    
+    -- initialise TCP connection and register event handlers
     con = net.createConnection(net.TCP, 0)
     con:on("receive", function(connection, payload)
         if (debug and serialOut) then
@@ -65,16 +67,23 @@ function M.init(callback)
             print("Connection succeeded")
         end
         
-        -- send the data packet
-        local packet = buildPacket()
         if(debug and serialOut) then print("Sending data:") print(packet) end
         connection:send(packet, function(connection)
             if serialOut then print("Sent data") sent = true end
         end)   
     end)
+
+    initialised = true
 end
 
-function M.update()
-    con:connect(80,'api.thingspeak.com')
+function M.update(newValues)
+    if not initialised then
+        error("You must call init() before updating")
+    else
+        sensorValues = newValues
+        -- create updated data packet
+        buildPacket()
+        con:connect(80,'api.thingspeak.com')
+    end
 end
 return M
