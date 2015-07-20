@@ -11,6 +11,7 @@ local moduleName = "thingspeak"
 local M = {}
 _G[moduleName] = M
 
+local APIkey -- the channels API write key, eg. 8T9YUBFQEPSPZF5
 local initialised = false
 local sent = false
 local replied = false
@@ -44,7 +45,8 @@ local function buildPacket()
     packet = table.concat(temp)
 end
 
-function M.init(callback)
+function M.init(key,callback)
+    APIkey = key
     -- register callback function to be called when done sending
     onFinished = callback
     
@@ -64,10 +66,15 @@ function M.init(callback)
         if serialOut then print("Reconnecting") end
     end)
     con:on("disconnection", function(connection)
-        if (serialOut and (not replied)) then
-                print("Didn't receive a reply.")
+        if not replied then
+            if debug then print("Didn't receive a reply.") end
+            if onFinished ~= nil then onFinished(false) end
+        else
+            if debug then print("Received a reply")end
+            if onFinished ~= nil then onFinished(true) end
+            -- todo, check reply for hhtp status 200 and body not 0
         end
-        if onFinished ~= nil then onFinished() end
+        con:close()
     end)
     con:on("connection", function(connection)
         if(debug and serialOut) then print("Sending data:") print(packet) end

@@ -32,7 +32,7 @@ local function initlogger()
     -- enable wifi 
     wifi.sta.connect()
     
-    thingspeak.init(gotosleep)
+    thingspeak.init(APIkey, gotosleep)
     
     tmr.alarm(1,3000,0,dologger)
 end
