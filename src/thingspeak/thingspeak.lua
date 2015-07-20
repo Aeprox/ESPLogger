@@ -8,7 +8,9 @@
 -- ***************************************************************************
 
 local moduleName = "thingspeak"
-local M = {}
+local M = {
+    DEBUG = true
+}
 _G[moduleName] = M
 
 writeKey = "" -- the channels API write key, eg. 8T9YUBFQEPSPZF5
@@ -53,7 +55,7 @@ function M.init(key,callback)
     -- initialise TCP connection and register event handlers
     con = net.createConnection(net.TCP, 0)
     con:on("receive", function(connection, payload)
-        if debug then
+        if M.DEBUG then
             print("Received reply:")
             print(payload)
         end
@@ -63,21 +65,21 @@ function M.init(key,callback)
         end
     end)
     con:on("reconnection", function(connection)
-        if debug then print("Reconnecting") end
+        if M.DEBUG then print("Reconnecting") end
     end)
     con:on("disconnection", function(connection)
         if not replied then
-            if debug then print("Didn't receive a reply.") end
+            if M.DEBUG then print("Didn't receive a reply.") end
             if onFinished ~= nil then onFinished(false) end
         else
-            if debug then print("Received a reply")end
+            if M.DEBUG then print("Received a reply")end
             if onFinished ~= nil then onFinished(true) end
             -- todo, check reply for http status 200 and body not 0
         end
         con:close()
     end)
     con:on("connection", function(connection)
-        if debug then print("Sending data:") print(packet) end
+        if M.DEBUG then print("Sending data:") print(packet) end
         con:send(packet)   
     end)
 
