@@ -12,18 +12,6 @@ dataValues = {}
 wifi.sta.connect()
 dofile("usersettings.lua")
 
-thingspeak = require("thingspeak")
-thingspeak.init(wkey,onSendComplete)
-
--- fill table with values (max. 8 fields)
-dataValues["field1"] = 123
-dataValues["field5"] = 7.65
-dataValues["field4"] = 8000
-dataValues["field2"] = 9.5453
--- send to thingspeak
-thingspeak.update(dataValues)
-
-
 function onSendComplete(success) 
     if success then 
         print("Done sending data")
@@ -35,3 +23,14 @@ function onSendComplete(success)
     thingspeak = nil
     package.loaded["thingspeak"]=nil
 end
+
+thingspeak = require("thingspeak")
+thingspeak.init(wkey,onSendComplete)
+
+-- fill table with values (max. 8 fields)
+dataValues["field1"] = 123
+dataValues["field5"] = 7.65
+dataValues["field4"] = 8000
+dataValues["field2"] = 9.5453
+-- send to thingspeak
+thingspeak.update(dataValues)
