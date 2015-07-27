@@ -13,14 +13,14 @@ local M = {
 }
 _G[moduleName] = M
 
-writeKey = "" -- the channels API write key, eg. 8T9YUBFQEPSPZF5
-initialised = false
-sent = false
-replied = false
-onFinished = nil
+local writeKey = "" -- the channels API write key, eg. 8T9YUBFQEPSPZF5
+local initialised = false
+local sent = false
+local replied = false
+local onFinished = nil
 con = nil
-packet = "" -- string representing the http packet
-dataFields = {} -- contains the actual data to be sent in (key,value) pairs where key = "field1" etc like defined in your thingspeak channel settings
+local packet = "" -- string representing the http packet
+local dataFields = {} -- contains the actual data to be sent in (key,value) pairs where key = "field1" etc like defined in your thingspeak channel settings
 
 local function buildPacket()
     -- construct url-encoded string containing sensor values
