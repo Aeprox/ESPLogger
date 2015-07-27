@@ -22,7 +22,7 @@ local packet = "" -- string representing the http packet
 local dataFields = {} -- contains the actual data to be sent in (key,value) pairs where key = "field1" etc like defined in your thingspeak channel settings
 
 local function buildPacket()
-    -- construct url-encoded string containing sensor values
+    -- construct url-encoded string containing values to send to thingspeak
     local temp = {}  
     table.insert(temp,"headers=false") -- reduce number of headers in reply 
     for i, v in pairs(dataFields) do

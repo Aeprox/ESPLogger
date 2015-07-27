@@ -6,9 +6,10 @@
 --
 -- MIT license, http://opensource.org/licenses/MIT
 -- ***************************************************************************
-print("Aeprox ESP8266 thingspeak module v0.1 (Compatible with NodeMCU 0.9.6 build 20150627) ")
 wkey = "8T9YLMBFQEPSPZ1S"
 dataValues = {} 
+
+wifi.sta.connect()
 
 local function onSendComplete(success) 
     if success then 
@@ -33,5 +34,5 @@ function sendData()
     thingspeak.send(wkey,dataValues,onSendComplete)
 end
      
---sendData()
+sendData()
 tmr.alarm(2,15000,1,sendData)       
