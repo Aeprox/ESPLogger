@@ -9,10 +9,8 @@
 print("Aeprox ESP8266 thingspeak module v0.1 (Compatible with NodeMCU 0.9.6 build 20150627) ")
 wkey = "8T9YLMBFQEPSPZ1S"
 dataValues = {} 
-wifi.sta.connect()
-dofile("usersettings.lua")
 
-function onSendComplete(success) 
+local function onSendComplete(success) 
     if success then 
         print("Done sending data")
     else
@@ -24,13 +22,17 @@ function onSendComplete(success)
     package.loaded["thingspeak"]=nil
 end
 
-thingspeak = require("thingspeak")
-thingspeak.init(wkey,onSendComplete)
-
--- fill table with values (max. 8 fields)
-dataValues["field1"] = 123
-dataValues["field5"] = 7.65
-dataValues["field4"] = 8000
-dataValues["field2"] = 9.5453
--- send to thingspeak
-thingspeak.update(dataValues)
+function sendData()
+    thingspeak = require("thingspeak")
+    thingspeak.init(wkey,onSendComplete)
+     
+    -- fill table with values (max. 8 fields)
+    dataValues["field1"] = 123
+    dataValues["field5"] = 7.65
+    dataValues["field4"] = 8000
+    dataValues["field2"] = 9.5453
+    -- send to thingspeak
+    thingspeak.update(dataValues)
+end
+sendData()
+tmr.alarm(2,15000,1,sendData)       
