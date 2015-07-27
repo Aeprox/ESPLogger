@@ -1,11 +1,11 @@
--- ***************************************************************************
+-- ************************************************
 -- Thingspeak module for ESP8266 with nodeMCU
 -- tested 2015-07-20 with build 20150627
 --
 -- Written by Aeprox @ github
 --
 -- MIT license, http://opensource.org/licenses/MIT
--- ***************************************************************************
+-- *************************************************
 
 local moduleName = "thingspeak"
 local M = {
@@ -14,7 +14,6 @@ local M = {
 _G[moduleName] = M
 
 local writeKey = "" -- the channels API write key, eg. 8T9YUBFQEPSPZF5
-local initialised = false
 local sent = false
 local replied = false
 local onFinished = nil
@@ -47,7 +46,7 @@ local function buildPacket()
     packet = table.concat(temp)
 end
 
-function M.init(key,callback)
+local function init(key,callback)
     writeKey = key
     -- register callback function to be called when done sending
     onFinished = callback
@@ -61,7 +60,6 @@ function M.init(key,callback)
         end
         if (payload ~= nil) then
             replied = true
-            con:close()
         end
     end)
     con:on("reconnection", function(connection)
@@ -82,18 +80,17 @@ function M.init(key,callback)
         if M.DEBUG then print("Sending data:") print(packet) end
         con:send(packet)   
     end)
-
-    initialised = true
 end
 
-function M.update(newValues)
+local function update(newValues)
     sent, replied = false, false
-    if not initialised then
-        error("You must call init() before calling update()")
-    else
-        dataFields = newValues
-        buildPacket() -- create updated data packet
-        con:connect(80,'api.thingspeak.com')
-    end
+    dataFields = newValues
+    buildPacket() -- create updated data packet
+    con:connect(80,'api.thingspeak.com')
+end
+
+function M.send(key,newValues,callback)
+    init(key,callback)
+    update(newValues)
 end
 return M
