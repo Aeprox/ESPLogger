@@ -1,27 +1,28 @@
--- ***************************************************************************
+-- ************************************************
 -- Thingspeak module for ESP8266 with nodeMCU
 -- tested 2015-07-20 with build 20150627
 --
 -- Written by Aeprox @ github
 --
 -- MIT license, http://opensource.org/licenses/MIT
--- ***************************************************************************
+-- *************************************************
 
 local moduleName = "thingspeak"
-local M = {}
+local M = {
+    DEBUG = true
+}
 _G[moduleName] = M
 
-local APIkey -- the channels API write key, eg. 8T9YUBFQEPSPZF5
-local initialised = false
+local writeKey = "" -- the channels API write key, eg. 8T9YUBFQEPSPZF5
 local sent = false
 local replied = false
-local onFinished
-local con
-local packet -- string representing the http packet
+local onFinished = nil
+con = nil
+local packet = "" -- string representing the http packet
 local dataFields = {} -- contains the actual data to be sent in (key,value) pairs where key = "field1" etc like defined in your thingspeak channel settings
 
 local function buildPacket()
-    -- construct url-encoded string containing sensor values
+    -- construct url-encoded string containing values to send to thingspeak
     local temp = {}  
     table.insert(temp,"headers=false") -- reduce number of headers in reply 
     for i, v in pairs(dataFields) do
@@ -35,7 +36,7 @@ local function buildPacket()
     temp = {}
     table.insert(temp, "POST /update HTTP/1.1\r\n")
     table.insert(temp, "Host: api.thingspeak.com\r\n")
-    table.insert(temp, "X-THINGSPEAKAPIKEY: "..APIkey.."\r\n")
+    table.insert(temp, "X-THINGSPEAKAPIKEY: "..writeKey.."\r\n")
     table.insert(temp, "Connection: close\r\n")
     table.insert(temp, "Content-Type: application/x-www-form-urlencoded\r\n")
     table.insert(temp, "Content-Length: "..length.."\r\n\r\n")
@@ -45,54 +46,51 @@ local function buildPacket()
     packet = table.concat(temp)
 end
 
-function M.init(key,callback)
-    APIkey = key
+local function init(key,callback)
+    writeKey = key
     -- register callback function to be called when done sending
     onFinished = callback
     
     -- initialise TCP connection and register event handlers
     con = net.createConnection(net.TCP, 0)
     con:on("receive", function(connection, payload)
-        if (debug and serialOut) then
+        if M.DEBUG then
             print("Received reply:")
             print(payload)
         end
         if (payload ~= nil) then
             replied = true
-            con:close()
         end
     end)
     con:on("reconnection", function(connection)
-        if serialOut then print("Reconnecting") end
+        if M.DEBUG then print("Reconnecting") end
     end)
     con:on("disconnection", function(connection)
         if not replied then
-            if debug then print("Didn't receive a reply.") end
+            if M.DEBUG then print("Didn't receive a reply.") end
             if onFinished ~= nil then onFinished(false) end
         else
-            if debug then print("Received a reply")end
+            if M.DEBUG then print("Received a reply")end
             if onFinished ~= nil then onFinished(true) end
-            -- todo, check reply for hhtp status 200 and body not 0
+            -- todo, check reply for http status 200 and body not 0
         end
         con:close()
     end)
     con:on("connection", function(connection)
-        if(debug and serialOut) then print("Sending data:") print(packet) end
-        connection:send(packet, function(connection)
-            if serialOut then print("Sent data") sent = true end
-        end)   
+        if M.DEBUG then print("Sending data:") print(packet) end
+        con:send(packet)   
     end)
-
-    initialised = true
 end
 
-function M.update(newValues)
-    if not initialised then
-        error("You must call init() before calling update()")
-    else
-        dataFields = newValues
-        buildPacket() -- create updated data packet
-        con:connect(80,'api.thingspeak.com')
-    end
+local function update(newValues)
+    sent, replied = false, false
+    dataFields = newValues
+    buildPacket() -- create updated data packet
+    con:connect(80,'api.thingspeak.com')
+end
+
+function M.send(key,newValues,callback)
+    init(key,callback)
+    update(newValues)
 end
 return M
