@@ -18,7 +18,7 @@ status,t,h = dht.readxx(DHTPIN)
 
 -- output to serial
 if(serialOut) then
-    print("Temp.: "..(t).."°C")
+    print("Temp.: "..(t).."degC")
     print("Humidity: "..(h).."%")
     print("Illuminance: ch0: ".. lx0 ..", ch1: "..lx1)
     print("Vdd: "..Vdd)
