@@ -11,7 +11,7 @@ local function dologger()
         tmr.alarm(2,3000,0,dologger)
     else
         dofile("readsensors.lc")
-        thingspeak.update(sensorValues)
+        thingspeak.send(APIkey, sensorValues, gotosleep)
     end
 end
 
@@ -31,8 +31,6 @@ local function initlogger()
     end
     -- enable wifi 
     wifi.sta.connect()
-    
-    thingspeak.init(APIkey, gotosleep)
     
     tmr.alarm(1,3000,0,dologger)
 end
