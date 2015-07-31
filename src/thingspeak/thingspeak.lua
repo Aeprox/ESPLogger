@@ -5,7 +5,8 @@
 -- Written by Aeprox @ github
 --
 -- MIT license, http://opensource.org/licenses/MIT
--- *************************************************
+-- ************************************************
+
 
 local moduleName = "thingspeak"
 local M = {
