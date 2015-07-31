@@ -20,13 +20,21 @@ status,t,h = dht.readxx(DHTPIN)
 if(serialOut) then
     print("Temp.: "..(t).."degC")
     print("Humidity: "..(h).."%")
-    print("Illuminance: ch0: ".. lx0 ..", ch1: "..lx1)
+    if lxSensor == 1 then    
+        print("Illuminance: ".. lx0)
+    elseif lxSensor == 2 then
+        print("Illuminance: ch0: ".. lx0 ..", ch1: "..lx1)
+    end
     print("Vdd: "..Vdd)
 end
 
 --output to thingspeak
 sensorValues["field1"] = t
 sensorValues["field2"] = h
-sensorValues["field3"] = lx0
-sensorValues["field4"] = lx1
+if lxSensor == 1 then
+    sensorValues["field3"] = lx0
+elseif lxSensor == 2 then
+    sensorValues["field3"] = lx0
+    sensorValues["field4"] = lx1
+end
 sensorValues["field5"] = Vdd
