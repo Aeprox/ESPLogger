@@ -29,19 +29,20 @@ This project is licensed under the terms of the MIT license. See full license in
 6. Upload the following lua files to the module.
   1. usersettings.lua
   2. either bh1750.lua or tsl2561.lua and i2cutils.lua
-  3. init.lua
-  4. readsensors.lua
-  5. thingspeak.lua
+  3. readsensors.lua
+  4. thingspeak.lua
+  5. init.lua
 7. Compile all files except usersettings.lua and init.lua to .lc files and delete the original .lua files. You may have to reboot sometimes to clear some heap when the module won't compile the files
 8. Reboot and watch the serial interface to see the magic happen.
 
 If all went well you should now start seeing text on the serial interface (baudrate 9600). If it keeps reconnecting, you might have network issues. Try using some of the nodeMCU API commands to figure it out and/or send me an Issue on github.
 
 # Changelog
-ESPLogger v1.1 (2015-08-XX)
-* Updated to nodeMCU 0.9.6-dev_20150627
-* Support for node.dsleep()! Greatly decreases power consumption. See usersettings.lua to enable
-* 
+ESPLogger v1.1 (2015-08-01)
+* Updated to nodeMCU 0.9.6-dev_20150627 (no longer compatible with previous builds)
+* Use new DHT22 C module (instead of lua module) that comes integrated with latest nodeMCU
+* Support for node.dsleep()! Huge powersavings. See usersettings.lua to enable
+* A more versatile approach to the thingspeak code.
 
 ESPLogger v1.0 (2015-06-15)
 * Supports DHT22, BH1750 and TSL2561
@@ -49,7 +50,7 @@ ESPLogger v1.0 (2015-06-15)
 * No power savings included (yet!)
 
 # Known issues
-1. Some cheap chinese modules come with incorrect silkscreen and wrong pin-numbering. Double-check
+1. Some cheap chinese modules come with incorrect silkscreen/wrong pin-numbering. Double-check!
 2. The esp8266 can't connect to AES-protected networks (afaik? user input is welcome!)
 3. Weird crashes? Memory issues? Send us a an issue report on github please.
 
