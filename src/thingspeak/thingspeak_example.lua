@@ -12,9 +12,9 @@ dataValues = {}
 
 wifi.sta.connect()
 
-local function onSendComplete(success) 
+function onSendComplete(success,status) 
     if success then 
-        print("Done sending data")
+        print("Done sending data. Reply status:"..status)
     else
         print("Couldn't send data")
     end
@@ -26,11 +26,12 @@ end
 function sendData()
     thingspeak = require("thingspeak")
 
-    -- fill table with values (max. 8 fields)
+    -- fill table with values
     dataValues["field1"] = 123
     dataValues["field5"] = 7.65
     dataValues["field4"] = 8000
     dataValues["field2"] = 9.5453
+    dataValues["status"] = "Success"
     -- send to thingspeak
     thingspeak.send(wkey,dataValues,onSendComplete)
 end
