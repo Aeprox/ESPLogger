@@ -46,7 +46,7 @@ dataValues["field5"] = 7.65
 ```
 Maximum of fields allowed by thingspeak API is 8.<br />
 
-* callback: This function is called after the data has been sent. It has a boolean as parameter, indicating wether or not a reply was received. <br />
+* callback: This function is called after the data has been sent. It has 2 parameters: a  boolean indicating wether or not a reply was received, and a string containing the http status code received. <br />
 
 
 ####Returns
@@ -68,9 +68,9 @@ dataValues["field2"] = 9.5453
 -- send to thingspeak
 thingspeak.update(key, dataValues,onSendComplete)
 
-function onSendComplete(success) 
+function onSendComplete(success,status) 
     if success then 
-        print("Done sending data")
+        print("Done sending data. Reply status:"..status)
     else
         print("Couldn't send data")
     end
@@ -80,7 +80,3 @@ function onSendComplete(success)
     package.loaded["thingspeak"]=nil
 end
 ```
-
-####See also
-**-**   []()
-

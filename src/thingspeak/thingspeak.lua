@@ -72,11 +72,10 @@ local function init(key,callback)
     con:on("disconnection", function(connection)
         if not replied then
             if M.DEBUG then print("Didn't receive a reply.") end
-            if onFinished ~= nil then onFinished(false,httpReplyStatus) end
+            if onFinished ~= nil then onFinished(false) end
         else
             if M.DEBUG then print("Received a reply")end
             if onFinished ~= nil then onFinished(true,httpReplyStatus) end
-            -- todo, check reply for http status 200 and body not 0
         end
         con:close()
     end)
