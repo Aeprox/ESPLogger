@@ -25,7 +25,7 @@ if(serialOut) then
     elseif lxSensor == 2 then
         print("Illuminance: ch0: ".. lx0 ..", ch1: "..lx1)
     end
-    print("Vdd: "..Vdd)
+    if readV then print("Vdd: "..Vdd) end
 end
 
 --output to thingspeak
@@ -37,4 +37,4 @@ elseif lxSensor == 2 then
     sensorValues["field3"] = lx0
     sensorValues["field4"] = lx1
 end
-sensorValues["field5"] = Vdd
+if readV then sensorValues["field5"] = Vdd end
