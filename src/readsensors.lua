@@ -7,8 +7,10 @@ if lxSensor == 1 then
     bh1750 = nil
     package.loaded["bh1750"]=nil
 elseif lxSensor == 2 then
-    local tsl = require("tsl2561lib")
-    lx0,lx1 = tsl.getchannels()
+    tsl2561.init(SDA_PIN, SCL_PIN)
+    tsl2561.settiming(lxIntTime,lxGain)
+    lx0,lx1 = tsl2561.getrawchannels()
+    lux = tsl2561.getlux()
     tsl = nil
     package.loaded["tsl"]=nil
 end
@@ -23,9 +25,9 @@ if(serialOut) then
     if lxSensor == 1 then    
         print("Illuminance: ".. lx0)
     elseif lxSensor == 2 then
-        print("Illuminance: ch0: ".. lx0 ..", ch1: "..lx1)
+        print(string.format("Illuminance: %i lx(ch0: %i, ch1: %i)",lux,lx0,lx1))
     end
-    if readV then print("Vdd: "..Vdd) end
+    if Vdd ~= nil then print("Vdd: "..Vdd) end
 end
 
 --output to thingspeak
@@ -36,5 +38,6 @@ if lxSensor == 1 then
 elseif lxSensor == 2 then
     sensorValues["field3"] = lx0
     sensorValues["field4"] = lx1
+    sensorValues["field5"] = lux
 end
-if readV then sensorValues["field5"] = Vdd end
+if Vdd ~= nil then sensorValues["field6"] = Vdd end
