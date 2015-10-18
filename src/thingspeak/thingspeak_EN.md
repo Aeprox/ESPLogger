@@ -38,13 +38,7 @@ Valid parameters:
     * twitter (string) - Twitter username linked to ThingTweet (optional)
     * tweet (string) - Twitter status update; see updating ThingTweet for more info (optional)
     * created_at (datetime) - Date when this feed entry was created, in ISO 8601 format, for example: 2014-12-31 23:59:59 . Time zones can be specified via the timezone parameter (optional)
-
-```lua
-dataValues["field1"] = 123
-dataValues["field7"] = 234
-dataValues["field5"] = 7.65
-```
-Maximum of fields allowed by thingspeak API is 8.<br />
+<br />
 
 * callback: This function is called after the data has been sent. It has 2 parameters: a  boolean indicating wether or not a reply was received, and a string containing the http status code received. <br />
 
@@ -59,12 +53,13 @@ dataValues = {}
 
 thingspeak = require("thingspeak")
 
--- fill table with values (max. 8 fields)
+-- fill table with values
 dataValues["field1"] = 123
 dataValues["field7"] = 234
 dataValues["field5"] = 7.65
 dataValues["field4"] = 8000
 dataValues["field2"] = 9.5453
+dataValues["status"] = "success!"
 -- send to thingspeak
 thingspeak.update(key, dataValues,onSendComplete)
 

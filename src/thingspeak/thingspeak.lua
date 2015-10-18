@@ -27,7 +27,8 @@ local function buildPacket()
     local temp = {}
     table.insert(temp,"headers=false") -- reduce number of headers in reply 
     for i, v in pairs(dataFields) do
-        table.insert(temp, string.format("&%s=%.1f",i,v))
+        if type(v) == "number" then table.insert(temp, string.format("&%s=%.1f",i,v))
+        elseif type(v) == "string" then table.insert(temp, string.format("&%s=%s",i,v)) end
     end
     local fieldString = table.concat(temp)
     local length = string.len(fieldString)
