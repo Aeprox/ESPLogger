@@ -5,8 +5,7 @@
 -- Written by Aeprox @ github
 --
 -- MIT license, http://opensource.org/licenses/MIT
--- ************************************************
-
+-- *************************************************
 
 local moduleName = "thingspeak"
 local M = {
@@ -24,14 +23,15 @@ local dataFields = {} -- contains the actual data to be sent in (key,value) pair
 
 local function buildPacket()
     -- construct url-encoded string containing values to send to thingspeak
-    local temp = {}
+    local temp = {}  
     table.insert(temp,"headers=false") -- reduce number of headers in reply 
     for i, v in pairs(dataFields) do
-        table.insert(temp, string.format("&%s=%.1f",i,v))
+        table.insert(temp, "&"..i.."="..v)
     end
+    
     local fieldString = table.concat(temp)
     local length = string.len(fieldString)
-    
+
     -- construct http header and body
     temp = {}
     table.insert(temp, "POST /update HTTP/1.1\r\n")
@@ -41,7 +41,7 @@ local function buildPacket()
     table.insert(temp, "Content-Type: application/x-www-form-urlencoded\r\n")
     table.insert(temp, "Content-Length: "..length.."\r\n\r\n")
     table.insert(temp, fieldString)
-    table.insert(temp, "\r\n")
+    table.insert(temp, "\r\n\r\n")
    
     packet = table.concat(temp)
 end

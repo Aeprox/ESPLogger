@@ -4,21 +4,12 @@ print("Aeprox ESP8266 datalogger V1.1 (Compatible with NodeMCU 0.9.6 build 20150
 sensorValues = {} 
 dofile("usersettings.lua")
 local thingspeak = require("thingspeak")
-local wifiattempts = 0
 
 local function dologger()
-    if wifiattempts >= 5 then
-        print("Wifi connection failed. Retrying next update interval")
-        wifiattempts = 0;
-        gotosleep()
-        return
-    end
     if wifi.sta.status() < 5 then
-        wifiattempts = wifiattempts + 1
-        print("Wifi connection failed. Retrying in 5 seconds...")
-        tmr.alarm(2,5000,0,dologger)
+        print("Wifi connection failed.")
+        tmr.alarm(2,3000,0,dologger)
     else
-        wifiattempts = 0
         dofile("readsensors.lc")
         thingspeak.send(APIkey, sensorValues, gotosleep)
     end
@@ -53,6 +44,6 @@ function gotosleep()
     if sleepEnabled then
         node.dsleep(APIdelay*1000000)
     else
-        tmr.alarm(3,APIdelay*1000,0,initlogger)
+        tmr.alarm(0,APIdelay*1000,0,initlogger)
     end
 end
