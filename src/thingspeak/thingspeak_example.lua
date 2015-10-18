@@ -1,12 +1,13 @@
--- ***************************************************************************
+-- ************************************************
 -- Thingspeak example for ESP8266 with nodeMCU
 -- tested 2015-07-20 with build 20150627
 --
 -- Written by Aeprox @ github
 --
 -- MIT license, http://opensource.org/licenses/MIT
--- ***************************************************************************
-wkey = "8T9YLMBFQEPSPZ1S"
+-- ************************************************
+
+wkey = "8T9YUBFQEPSPZF5" -- thingspeak API write key
 dataValues = {} 
 
 wifi.sta.connect()
