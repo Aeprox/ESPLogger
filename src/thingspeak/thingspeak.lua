@@ -49,16 +49,20 @@ local function init(key,callback)
     writeKey = key
     -- register callback function to be called when done sending
     onFinished = callback
-    
+    local httpReplyStatus
     -- initialise TCP connection and register event handlers
     con = net.createConnection(net.TCP, 0)
     con:on("receive", function(connection, payload)
-        if M.DEBUG then
-            print("Received reply:")
-            print(payload)
-        end
-        if (payload ~= nil) then
+        if (payload ~= nil and payload ~= "0\r\n\r\n") then
             replied = true
+            if M.DEBUG then
+                print("Received reply:")
+                print(payload)
+            end
+            -- check status
+            statusStart,statusEnd = string.find(payload,"Status:")
+            lineEnd = string.find(payload,"\r\n",statusEnd+1)
+            httpReplyStatus = string.sub(payload,statusEnd,lineEnd)
         end
     end)
     con:on("reconnection", function(connection)
@@ -67,10 +71,10 @@ local function init(key,callback)
     con:on("disconnection", function(connection)
         if not replied then
             if M.DEBUG then print("Didn't receive a reply.") end
-            if onFinished ~= nil then onFinished(false) end
+            if onFinished ~= nil then onFinished(false,httpReplyStatus) end
         else
             if M.DEBUG then print("Received a reply")end
-            if onFinished ~= nil then onFinished(true) end
+            if onFinished ~= nil then onFinished(true,httpReplyStatus) end
             -- todo, check reply for http status 200 and body not 0
         end
         con:close()
