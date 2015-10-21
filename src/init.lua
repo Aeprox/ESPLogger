@@ -1,4 +1,4 @@
-print("Aeprox ESP8266 datalogger V1.1 (Compatible with NodeMCU 0.9.6 build 20150627) ")
+print("Aeprox ESP8266 datalogger V1.4 (Compatible with NodeMCU 1.4.0 build 20151006) ")
 
 -- variables
 sensorValues = {} 
