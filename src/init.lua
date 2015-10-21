@@ -9,19 +9,19 @@ local wifiattempts = 0
 local function dologger()
     if wifiattempts >= 5 then
         print("Wifi connection failed. Retrying next update interval")
-        wifiattempts = 0;
-        gotosleep()
-        return
-    end
-    if wifi.sta.status() < 5 then
-        wifiattempts = wifiattempts + 1
-        print("Wifi connection failed. Retrying in 5 seconds...")
-        tmr.alarm(2,5000,0,dologger)
-    else
         wifiattempts = 0
-        dofile("readsensors.lc")
-        thingspeak.send(APIkey, sensorValues, gotosleep)
-    end
+        gotosleep()
+    else
+        if wifi.sta.status() < 5 then
+            wifiattempts = wifiattempts + 1
+            print("Wifi connection failed. Retrying in 5 seconds...")
+            tmr.alarm(2,5000,0,dologger)
+        else
+            wifiattempts = 0
+            dofile("readsensors.lc")
+            thingspeak.send(APIkey, sensorValues, gotosleep)
+        end
+   end
 end
 
 local function initlogger()
