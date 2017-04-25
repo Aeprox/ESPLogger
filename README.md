@@ -3,7 +3,7 @@ An IoT project using an ESP8266 wifi-module to read temperature/humidity/illumin
 
 This project is licensed under the terms of the MIT license. See full license in LICENSE.md
 
-##Hardware
+## Hardware
 * Any ESP8266 module with GPIO12,13 and 14 pinned out (eg ESP-07,ESP-12)
 * DHT22 temperature and humidty sensor
 * Supports BH1750fvi and TSL2561 Illuminance sensor
@@ -12,12 +12,12 @@ This project is licensed under the terms of the MIT license. See full license in
 
 ![ESPLogger schematic](/hardware/ESPLogger_schema.png "ESPLogger schematic")
 
-##Software
+## Software
 * [nodeMCU firmware](https://github.com/nodemcu/nodemcu-firmware)
 * [TSL2561 library](https://github.com/hamishcunningham/fishy-wifi)
 
 
-#Installing & configuring
+# Installing & configuring
 1. Flash the module with the [0.9.6-dev_20150627](https://github.com/nodemcu/nodemcu-firmware/releases/tag/0.9.6-dev_20150627) build (only tested with floating point builds)
 2. Reboot in user mode
 3. Configure the following settings in usersettings.lua
